@@ -1,9 +1,9 @@
 import os
 import uuid
-import subprocess
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from markitdown import MarkItDown
 
 app = FastAPI()
 
@@ -35,24 +35,22 @@ async def convert_pdf(file: UploadFile = File(...)):
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
-    # Конвертируем через markitdown
+    # Конвертируем через библиотеку markitdown (без subprocess!)
     try:
-        result = subprocess.run(
-            ["markitdown", input_path],
-            capture_output=True,
-            text=True,
-            check=True
-        )
+        markitdown = MarkItDown()
+        result = markitdown.convert(input_path)
+        markdown_text = result.text_content
+
         with open(output_path, "w", encoding="utf-8") as f:
-            f.write(result.stdout)
-    except subprocess.CalledProcessError as e:
-        raise HTTPException(status_code=500, detail=f"Ошибка конвертации: {e.stderr}")
+            f.write(markdown_text)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка конвертации: {str(e)}")
     finally:
         if os.path.exists(input_path):
             os.remove(input_path)
 
     return FileResponse(
         output_path,
-        media_type="text/markdown",
+        media_type="text/markdown; charset=utf-8",
         filename=f"{safe_base_name}.md"
     )
