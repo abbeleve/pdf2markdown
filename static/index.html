@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF → Markdown</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>PDF в Markdown</h1>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="drop-area" id="dropArea">
+            <div class="icon">📄</div>
+            <p id="dropText">Перетащите PDF сюда</p>
+            <p>или</p>
+            <input type="file" id="fileInput" class="file-input" name="file" accept=".pdf" />
+            <button type="button" class="btn" id="browseBtn">Выбрать файл</button>
+            <div id="fileName" style="margin-top: 12px; font-size: 14px; color: var(--accent); font-weight: 500;"></div>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Конвертировать</button>
+      </form>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
