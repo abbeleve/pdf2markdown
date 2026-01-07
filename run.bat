@@ -29,7 +29,7 @@ if not exist "venv" (
 call venv\Scripts\activate
 
 echo [2/3] Installing packages...
-venv\Scripts\pip.exe install markitdown fastapi uvicorn python-multipart --quiet
+venv\Scripts\pip.exe install markitdown[all] fastapi uvicorn python-multipart --quiet
 if errorlevel 1 (
     echo [ERROR] Failed to install packages.
     pause
